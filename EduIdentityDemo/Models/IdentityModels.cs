@@ -23,6 +23,7 @@ namespace EduIdentityDemo.Models
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
         {
+            //this.Users
         }
 
         public static ApplicationDbContext Create()

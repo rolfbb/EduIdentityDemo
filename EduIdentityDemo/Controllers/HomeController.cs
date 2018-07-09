@@ -1,30 +1,56 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
 
 namespace EduIdentityDemo.Controllers
 {
+    [Authorize]
+    //[Authorize(Roles = "Editor")]
     public class HomeController : Controller
     {
+        [AllowAnonymous] //"disable authorization"
         public ActionResult Index()
         {
+            ViewBag.Title = "Index (Public)";
+
             return View();
         }
 
-        public ActionResult About()
+        [Authorize(Roles = "Admin")]
+        public ActionResult Admin()
         {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
+            ViewBag.Title = "Admin";
+            return View("Index");
         }
 
-        public ActionResult Contact()
+        [Authorize(Roles = "Editor")]
+        public ActionResult Editor()
         {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
+            ViewBag.Title = "Editor";
+            return View("Index");
         }
+
+        [Authorize(Roles = "Editor, Admin")]
+        public ActionResult EditorOrAdmin()
+        {
+            ViewBag.Title = "Editor or admin";
+            return View("Index");
+        }
+
+        [Authorize(Roles = "Editor")]
+        //[AllowAnonymous] - ej bra, stänger av autentiseringen helt.
+        [Authorize(Roles = "Admin")]
+        public ActionResult EditorAndAdmin()
+        {
+            ViewBag.Title = "Editor and admin";
+            return View("Index");
+        }
+
+        //Långsökt användning...
+        [Authorize(Users = "user@lexicon.se", Roles = "Admin")] //Man ska uppfylla båda!
+        public ActionResult UserIdentity()
+        {
+            ViewBag.Title = "User Identity";
+            return View("Index");
+        }
+
     }
 }
